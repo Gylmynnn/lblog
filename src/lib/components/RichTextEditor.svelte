@@ -38,12 +38,12 @@
 	let { content = '', placeholder = 'Tulis konten artikel di sini...', onUpdate }: Props = $props();
 
 	let element: HTMLDivElement;
-	let editor: Editor | null = $state(null);
+	let editor = $state<Editor | null>(null);
 	let fileInput: HTMLInputElement;
-	let isUploading = $state(false);
-	let isImageSelected = $state(false);
+	let isUploading = $state<boolean>(false);
+	let isImageSelected = $state<boolean>(false);
 
-	onMount(() => {
+	onMount((): void => {
 		editor = new Editor({
 			element: element,
 			extensions: [
@@ -74,21 +74,20 @@
 					class: 'prose prose-sm max-w-none focus:outline-none min-h-[300px] px-4 py-3'
 				}
 			},
-			onUpdate: ({ editor }) => {
+			onUpdate: ({ editor }): void => {
 				onUpdate?.(editor.getHTML());
 			},
-			onSelectionUpdate: ({ editor }) => {
-				// Check if an image is selected
+			onSelectionUpdate: ({ editor }): void => {
 				isImageSelected = editor.isActive('image');
 			}
 		});
 	});
 
-	onDestroy(() => {
+	onDestroy((): void => {
 		editor?.destroy();
 	});
 
-	function setLink() {
+	function setLink(): void {
 		if (!editor) return;
 		const previousUrl = editor.getAttributes('link').href;
 		const url = window.prompt('URL', previousUrl);
@@ -103,7 +102,7 @@
 		editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
 	}
 
-	function addImageByUrl() {
+	function addImageByUrl(): void {
 		if (!editor) return;
 		const url = window.prompt('Image URL');
 
@@ -112,24 +111,23 @@
 		}
 	}
 
-	function triggerFileUpload() {
+	function triggerFileUpload(): void {
 		fileInput?.click();
 	}
 
-	function deleteSelectedImage() {
+	function deleteSelectedImage(): void {
 		if (!editor || !isImageSelected) return;
 		editor.chain().focus().deleteSelection().run();
 		isImageSelected = false;
 		toast.success('Gambar dihapus dari editor');
 	}
 
-	async function handleFileUpload(event: Event) {
+	async function handleFileUpload(event: Event): Promise<void> {
 		const input = event.target as HTMLInputElement;
 		const file = input.files?.[0];
 
 		if (!file || !editor) return;
 
-		// Validate file type
 		const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 		if (!allowedTypes.includes(file.type)) {
 			toast.error('Format file tidak didukung', {
@@ -137,15 +135,12 @@
 			});
 			return;
 		}
-
-		// Validate file size (max 2MB)
 		if (file.size > 2 * 1024 * 1024) {
 			toast.error('File terlalu besar', {
 				description: 'Ukuran file maksimal 2MB.'
 			});
 			return;
 		}
-
 		isUploading = true;
 
 		try {
@@ -158,12 +153,8 @@
 			});
 
 			const result = await response.json();
+			if (!response.ok) throw new Error(result.error || 'Upload gagal');
 
-			if (!response.ok) {
-				throw new Error(result.error || 'Upload gagal');
-			}
-
-			// Insert image into editor
 			editor.chain().focus().setImage({ src: result.url }).run();
 
 			toast.success('Gambar berhasil diupload', {
@@ -176,19 +167,16 @@
 			});
 		} finally {
 			isUploading = false;
-			// Reset input
 			input.value = '';
 		}
 	}
 
-	const buttonClass = 'p-2 rounded hover:bg-muted transition-colors disabled:opacity-50';
-	const activeClass = 'bg-muted text-primary';
+	const buttonClass: string = 'p-2 rounded hover:bg-muted transition-colors disabled:opacity-50';
+	const activeClass: string = 'bg-muted text-primary';
 </script>
 
 <div class="overflow-hidden rounded-lg border border-input bg-background">
-	<!-- Toolbar -->
 	<div class="flex flex-wrap items-center gap-1 border-b border-input bg-muted/30 p-2">
-		<!-- Undo/Redo -->
 		<button
 			type="button"
 			onclick={() => editor?.chain().focus().undo().run()}
@@ -209,8 +197,6 @@
 		</button>
 
 		<div class="mx-1 h-6 w-px bg-border"></div>
-
-		<!-- Headings -->
 		<button
 			type="button"
 			onclick={() => editor?.chain().focus().toggleHeading({ level: 1 }).run()}
@@ -237,8 +223,6 @@
 		</button>
 
 		<div class="mx-1 h-6 w-px bg-border"></div>
-
-		<!-- Text Formatting -->
 		<button
 			type="button"
 			onclick={() => editor?.chain().focus().toggleBold().run()}
@@ -281,8 +265,6 @@
 		</button>
 
 		<div class="mx-1 h-6 w-px bg-border"></div>
-
-		<!-- Lists -->
 		<button
 			type="button"
 			onclick={() => editor?.chain().focus().toggleBulletList().run()}
@@ -301,8 +283,6 @@
 		</button>
 
 		<div class="mx-1 h-6 w-px bg-border"></div>
-
-		<!-- Block Elements -->
 		<button
 			type="button"
 			onclick={() => editor?.chain().focus().toggleBlockquote().run()}
@@ -321,8 +301,6 @@
 		</button>
 
 		<div class="mx-1 h-6 w-px bg-border"></div>
-
-		<!-- Link & Image -->
 		<button
 			type="button"
 			onclick={setLink}
@@ -352,8 +330,6 @@
 			</button>
 		{/if}
 	</div>
-
-	<!-- Hidden file input -->
 	<input
 		bind:this={fileInput}
 		type="file"
@@ -361,8 +337,6 @@
 		onchange={handleFileUpload}
 		class="hidden"
 	/>
-
-	<!-- Editor Content -->
 	<div bind:this={element} class="min-h-75"></div>
 </div>
 

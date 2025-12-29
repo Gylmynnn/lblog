@@ -7,9 +7,7 @@ import { verifyPassword, createToken } from '$lib/server/auth';
 
 export const load: PageServerLoad = async ({ cookies }) => {
 	const token = cookies.get('auth_token');
-	if (token) {
-		throw redirect(303, '/cms');
-	}
+	if (token) throw redirect(303, '/cms');
 	return {};
 };
 
@@ -19,23 +17,12 @@ export const actions: Actions = {
 		const username = formData.get('username') as string;
 		const password = formData.get('password') as string;
 
-		if (!username || !password) {
-			return fail(400, { error: 'Username dan password wajib diisi' });
-		}
-
+		if (!username || !password) return fail(400, { error: 'Username dan password wajib diisi' });
 		const user = await db.select().from(users).where(eq(users.username, username)).limit(1);
-
-		if (user.length === 0) {
-			return fail(401, { error: 'Username atau password salah' });
-		}
-
-		const isValidPassword = await verifyPassword(password, user[0].password);
-
-		if (!isValidPassword) {
-			return fail(401, { error: 'Username atau password salah' });
-		}
-
-		const token = await createToken({
+		if (user.length === 0) return fail(401, { error: 'Username atau password salah' });
+		const isValidPassword : boolean = await verifyPassword(password, user[0].password);
+		if (!isValidPassword) return fail(401, { error: 'Username atau password salah' });
+		const token : string = await createToken({
 			userId: user[0].id,
 			username: user[0].username,
 			name: user[0].name
@@ -46,9 +33,8 @@ export const actions: Actions = {
 			httpOnly: true,
 			secure: process.env.NODE_ENV === 'production',
 			sameSite: 'strict',
-			maxAge: 60 * 60 * 24 * 7 // 7 days
+			maxAge: 60 * 60 * 24 * 7
 		});
-
 		throw redirect(303, '/cms');
 	}
 };

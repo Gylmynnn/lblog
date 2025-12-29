@@ -6,12 +6,7 @@
 <header class="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-sm">
 	<div class="mx-auto max-w-5xl px-6 py-4">
 		<nav class="flex items-center justify-between">
-			<a
-				href="/"
-				class="text-xl font-semibold text-primary transition-colors hover:text-primary/80"
-			>
-				Laziza Blog
-			</a>
+			<a href="/" class="text-xl font-semibold text-primary transition-colors hover:text-primary/80"> Laziza Blog </a>
 			<div class="flex items-center gap-4">
 				<button
 					onclick={toggleMode}

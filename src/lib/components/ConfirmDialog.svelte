@@ -28,23 +28,23 @@
 		onCancel
 	}: Props = $props();
 
-	function handleBackdropClick() {
+	function handleBackdropClick(): void {
 		if (!loading) {
 			onCancel();
 		}
 	}
 
-	function handleKeydown(e: KeyboardEvent) {
+	function handleKeydown(e: KeyboardEvent): void {
 		if (e.key === 'Escape' && !loading) {
 			onCancel();
 		}
 	}
 
-	function handleDialogClick(e: MouseEvent) {
+	function handleDialogClick(e: MouseEvent): void {
 		e.stopPropagation();
 	}
 
-	const variantStyles = {
+	const variantStyles: Record<any, any> = {
 		danger: {
 			icon: 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400',
 			button: 'bg-red-600 hover:bg-red-700 text-white'
@@ -71,13 +71,9 @@
 		transition:fade={{ duration: 150 }}
 		onclick={handleBackdropClick}
 	>
-		<!-- Overlay -->
 		<div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
-
-		<!-- Dialog -->
-		<!-- svelte-ignore a11y_no_static_element_interactions -->
-		<!-- svelte-ignore a11y_interactive_supports_focus -->
 		<div
+			tabindex="0"
 			class="relative w-full max-w-md overflow-hidden rounded-2xl border border-border bg-card shadow-2xl"
 			transition:scale={{ duration: 200, start: 0.95, easing: cubicOut }}
 			onclick={handleDialogClick}
@@ -86,7 +82,6 @@
 			aria-labelledby="dialog-title"
 			aria-describedby="dialog-description"
 		>
-			<!-- Close button -->
 			<button
 				type="button"
 				class="absolute top-4 right-4 rounded-full p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
@@ -98,14 +93,12 @@
 			</button>
 
 			<div class="p-6">
-				<!-- Icon -->
 				<div class="mb-4 flex justify-center">
 					<div class="flex h-14 w-14 items-center justify-center rounded-full {variantStyles[variant].icon}">
 						<TriangleAlert class="h-7 w-7" />
 					</div>
 				</div>
 
-				<!-- Content -->
 				<div class="mb-6 text-center">
 					<h3 id="dialog-title" class="mb-2 text-lg font-semibold text-foreground">
 						{title}
@@ -115,7 +108,6 @@
 					</p>
 				</div>
 
-				<!-- Actions -->
 				<div class="flex gap-3">
 					<Button variant="outline" class="flex-1" onclick={onCancel} disabled={loading}>
 						{cancelText}

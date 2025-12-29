@@ -64,7 +64,7 @@
 									<!-- Image -->
 									<div class="relative overflow-hidden">
 										{#if featuredPost.coverImage}
-											<div class="aspect-[4/3] overflow-hidden bg-muted md:aspect-auto md:h-full md:min-h-[380px]">
+											<div class="aspect-4/3 overflow-hidden bg-muted md:aspect-auto md:h-full md:min-h-95">
 												<img
 													src={featuredPost.coverImage}
 													alt={featuredPost.title}
@@ -73,16 +73,14 @@
 											</div>
 										{:else}
 											<div
-												class="flex aspect-[4/3] items-center justify-center bg-gradient-to-br from-primary/10 to-primary/5 md:aspect-auto md:h-full md:min-h-[380px]"
+												class="flex aspect-4/3 items-center justify-center bg-linear-to-br from-primary/10 to-primary/5 md:aspect-auto md:h-full md:min-h-95"
 											>
 												<FileText class="h-16 w-16 text-primary/30" />
 											</div>
 										{/if}
-										<!-- Overlay gradient -->
 										<div
-											class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+											class="absolute inset-0 bg-linear-to-t from-black/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
 										></div>
-										<!-- Featured badge -->
 										<div class="absolute top-4 left-4">
 											<span
 												class="rounded-full bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground shadow-lg"
@@ -92,9 +90,7 @@
 										</div>
 									</div>
 
-									<!-- Content -->
 									<div class="flex flex-col justify-center p-6 sm:p-8 md:p-10">
-										<!-- Meta -->
 										<div class="mb-4 flex flex-wrap items-center gap-3">
 											{#if featuredPost.author}
 												<div class="flex items-center gap-2 rounded-full bg-muted/50 px-3 py-1.5 text-sm">
@@ -108,21 +104,18 @@
 											</div>
 										</div>
 
-										<!-- Title -->
 										<h3
 											class="mb-4 text-2xl leading-tight font-bold text-foreground transition-colors duration-200 group-hover:text-primary sm:text-3xl md:text-4xl"
 										>
 											{featuredPost.title}
 										</h3>
 
-										<!-- Excerpt -->
 										{#if featuredPost.excerpt}
 											<p class="mb-6 line-clamp-3 text-base leading-relaxed text-muted-foreground">
 												{featuredPost.excerpt}
 											</p>
 										{/if}
 
-										<!-- CTA -->
 										<div class="flex items-center gap-4">
 											<span class="text-base font-semibold text-primary">Baca artikel</span>
 											<div
@@ -141,7 +134,6 @@
 				</section>
 			{/if}
 
-			<!-- More Posts Section -->
 			{#if remainingPosts.length > 0}
 				<section class="pb-12 sm:pb-20">
 					<div class="mx-auto max-w-5xl px-4 sm:px-6">
@@ -159,7 +151,6 @@
 				</section>
 			{/if}
 		{:else}
-			<!-- Empty State -->
 			<section class="pb-12 sm:pb-20">
 				<div class="mx-auto max-w-5xl px-4 sm:px-6">
 					<div class="rounded-2xl border border-dashed border-border bg-muted/20 py-20 text-center">
@@ -173,6 +164,5 @@
 			</section>
 		{/if}
 	</main>
-
 	<Footer />
 </div>

@@ -2,10 +2,10 @@ import { SignJWT, jwtVerify } from 'jose';
 import { compare, hash } from 'bcryptjs';
 import { env } from '$env/dynamic/private';
 
-const JWT_SECRET = new TextEncoder().encode(
+const JWT_SECRET : Uint8Array<ArrayBuffer> = new TextEncoder().encode(
 	env.JWT_SECRET || 'your-secret-key-min-32-characters!!'
 );
-const JWT_EXPIRES_IN = '7d';
+const JWT_EXPIRES_IN : string = '7d';
 
 export interface JWTPayload {
 	userId: number;

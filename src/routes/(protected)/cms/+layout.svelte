@@ -13,19 +13,18 @@
 </script>
 
 <div class="min-h-screen bg-background">
-	<!-- Sidebar -->
-	<aside class="fixed top-0 left-0 flex h-screen w-64 flex-col border-r border-border bg-card">
-		<div class="flex items-center justify-between p-6">
-			<a href="/cms" class="text-xl font-bold text-primary"> Laziza CMS </a>
+	<aside class="fixed top-0 left-0 flex h-screen w-72 flex-col border-r border-border bg-card">
+		<div class="flex items-start justify-between p-6">
+			<a href="/cms" class="text-md font-bold text-primary">Content Manajement System</a>
 			<button
 				onclick={toggleMode}
 				class="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
 				title={mode.current === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
 			>
 				{#if mode.current === 'dark'}
-					<Sun class="h-4 w-4" />
+					<Sun class="h-6 w-6" />
 				{:else}
-					<Moon class="h-4 w-4" />
+					<Moon class="h-6 w-6" />
 				{/if}
 			</button>
 		</div>
@@ -44,9 +43,7 @@
 			{/each}
 		</nav>
 
-		<!-- Bottom Section -->
 		<div class="space-y-1 border-t border-border p-3">
-			<!-- User Info -->
 			{#if data.user}
 				<div class="flex items-center gap-3 px-3 py-2.5">
 					<div class="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
@@ -59,7 +56,6 @@
 				</div>
 			{/if}
 
-			<!-- View Blog -->
 			<a
 				href="/"
 				class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
@@ -68,7 +64,6 @@
 				Lihat Blog
 			</a>
 
-			<!-- Logout -->
 			<form action="/logout" method="POST" use:enhance>
 				<button
 					type="submit"
@@ -81,8 +76,7 @@
 		</div>
 	</aside>
 
-	<!-- Main Content -->
-	<main class="ml-64 min-h-screen">
+	<main class="ml-72 min-h-screen">
 		<div class="p-8">
 			{@render children()}
 		</div>

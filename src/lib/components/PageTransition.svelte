@@ -2,9 +2,10 @@
 	import { page } from '$app/state';
 	import { fade, fly } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
+	import type { Snippet } from 'svelte';
 
 	interface Props {
-		children: import('svelte').Snippet;
+		children: Snippet;
 	}
 
 	let { children }: Props = $props();

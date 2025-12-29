@@ -5,7 +5,6 @@
 	import { Calendar, ArrowLeft, Download, FileIcon, User } from '@lucide/svelte';
 
 	let { data } = $props();
-
 	function formatDate(date: Date): string {
 		return new Intl.DateTimeFormat('id-ID', {
 			year: 'numeric',
@@ -43,15 +42,12 @@
 	<main class="flex-1">
 		<article class="py-12">
 			<div class="mx-auto max-w-3xl px-6">
-				<!-- Back Button -->
 				<Button variant="ghost" href="/" class="mb-8 -ml-2">
 					<ArrowLeft class="h-4 w-4" />
 					Kembali
 				</Button>
 
-				<!-- Header -->
 				<header class="mb-8">
-					<!-- Author & Date Info -->
 					<div class="mb-6 flex items-center gap-4">
 						{#if data.author}
 							<div
@@ -94,19 +90,16 @@
 					{/if}
 				</header>
 
-				<!-- Cover Image -->
 				{#if data.post.coverImage}
 					<div class="mb-8 aspect-video overflow-hidden rounded-xl bg-muted">
 						<img src={data.post.coverImage} alt={data.post.title} class="h-full w-full object-cover" />
 					</div>
 				{/if}
 
-				<!-- Content -->
 				<div class="prose">
 					{@html data.post.content}
 				</div>
 
-				<!-- Attached Files -->
 				{#if data.files.length > 0}
 					<div class="mt-12 border-t border-border pt-8">
 						<h2 class="mb-4 text-lg font-semibold">File Lampiran</h2>

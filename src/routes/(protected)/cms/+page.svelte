@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
 	import { FileText, Eye, FilePen, Plus } from '@lucide/svelte';
-
 	let { data } = $props();
 </script>
 
@@ -9,7 +8,7 @@
 	<div class="mb-8 flex items-center justify-between">
 		<div>
 			<h1 class="text-2xl font-bold text-foreground">Dashboard</h1>
-			<p class="text-muted-foreground">Selamat datang di Laziza CMS</p>
+			<p class="text-muted-foreground">Selamat datang {data.user !== undefined ? data.user.name : 'Laziza'}</p>
 		</div>
 		<Button href="/cms/posts/new">
 			<Plus class="h-4 w-4" />
@@ -17,7 +16,6 @@
 		</Button>
 	</div>
 
-	<!-- Stats Cards -->
 	<div class="mb-8 grid grid-cols-1 gap-6 md:grid-cols-3">
 		<div class="rounded-xl border border-border bg-card p-6">
 			<div class="flex items-center gap-4">
@@ -54,7 +52,6 @@
 		</div>
 	</div>
 
-	<!-- Recent Posts -->
 	<div class="rounded-xl border border-border bg-card">
 		<div class="border-b border-border p-6">
 			<h2 class="text-lg font-semibold text-foreground">Post Terbaru</h2>
