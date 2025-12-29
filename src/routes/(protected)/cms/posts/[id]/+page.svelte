@@ -7,20 +7,18 @@
 
 	let { data, form } = $props();
 
-	const initialCoverImage = data.post.coverImage;
-	const initialContent = data.post.content;
-
-	let coverImagePreview = $state<string | null>(initialCoverImage);
 	let coverImageInput = $state<HTMLInputElement | null>(null);
 	let attachmentFiles = $state<File[]>([]);
-	let editorContent = $state(initialContent);
-
+    let coverImagePreview = $state<string | null>(null);
+    let editorContent = $state<string>('');
 	$effect(() => {
 		if (form?.error) {
 			toast.error('Gagal menyimpan', {
 				description: form.error
 			});
 		}
+        coverImagePreview = data.post.coverImage;
+        editorContent = data.post.content;
 	});
 
 	function handleCoverImage(event: Event) {
@@ -114,11 +112,8 @@
 		action="?/update"
 		enctype="multipart/form-data"
 		use:enhance={({ formData }) => {
-			// Add attachment files to form data
 			if (attachmentFiles.length > 0) {
-				// Remove any existing attachments field
 				formData.delete('attachments');
-				// Add each file
 				attachmentFiles.forEach((file) => {
 					formData.append('attachments', file);
 				});
@@ -131,7 +126,6 @@
 	>
 		<input type="hidden" name="content" value={editorContent} />
 
-		<!-- Hidden file input for cover image -->
 		<input
 			type="file"
 			bind:this={coverImageInput}
@@ -175,7 +169,7 @@
 						<span class="mb-2 block text-sm font-medium text-foreground">
 							Konten <span class="text-destructive">*</span>
 						</span>
-						<RichTextEditor content={initialContent} onUpdate={handleEditorUpdate} />
+						<RichTextEditor content={data.post.content} onUpdate={handleEditorUpdate} />
 					</div>
 				</div>
 

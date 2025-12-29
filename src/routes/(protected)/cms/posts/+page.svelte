@@ -7,31 +7,28 @@
 
 	let { data } = $props();
 
-	// Delete dialog state
-	let deleteDialogOpen = $state(false);
+	let deleteDialogOpen = $state<boolean>(false);
 	let postToDelete = $state<{ id: number; title: string } | null>(null);
-	let isDeleting = $state(false);
+	let isDeleting = $state<boolean>(false);
 
 	onMount(() => {
-		// Show flash message toast if exists
 		if (data.flash) {
 			toast.success(data.flash);
 		}
 	});
 
-	function openDeleteDialog(id: number, title: string) {
+	function openDeleteDialog(id: number, title: string) : void {
 		postToDelete = { id, title };
 		deleteDialogOpen = true;
 	}
 
-	function closeDeleteDialog() {
+	function closeDeleteDialog() : void {
 		deleteDialogOpen = false;
 		postToDelete = null;
 	}
 
-	async function confirmDelete() {
+	async function confirmDelete() : Promise<void>{
 		if (!postToDelete) return;
-
 		isDeleting = true;
 		try {
 			const response = await fetch(`/api/posts/${postToDelete.id}`, { method: 'DELETE' });
@@ -51,7 +48,7 @@
 		}
 	}
 
-	async function togglePublish(id: number, currentStatus: boolean) {
+	async function togglePublish(id: number, currentStatus: boolean) : Promise<void> {
 		try {
 			const response = await fetch(`/api/posts/${id}`, {
 				method: 'PATCH',
@@ -72,7 +69,6 @@
 	}
 </script>
 
-<!-- Delete Confirmation Dialog -->
 <ConfirmDialog
 	bind:open={deleteDialogOpen}
 	title="Hapus Post"
